@@ -6,6 +6,9 @@ import asyncio
 from asyncua import ua, Server
 from asyncua.common.methods import uamethod
 
+DHT_DATA_PIN = 25
+DHT_READ_TIMEOUT = 2
+
 logging.basicConfig(level=logging.INFO)
 _logger = logging.getLogger('asyncua')
 
@@ -29,11 +32,16 @@ async def main():
     _logger.info('Starting server!')
     async with server:
         while True:
-            humidity, temperature = Adafruit_DHT.read_retry(Adafruit_DHT.DHT11, 25)
-            _logger.info(temperature)
-            await var_temperature.write_value(float(temperature))
-            await var_humidity.write_value(float(humidity))
-            await asyncio.sleep(1)
+            humidity, temperature = Adafruit_DHT.read_retry(Adafruit_DHT.DHT11, DHT_DATA_PIN)
+
+            if humidity is not None and temperature is not None:
+                print('Temp={0:0.1f}*C Humidity={1:0.1f}%'.format(temperature, humidity))
+                await var_temperature.write_value(float(temperature))
+                await var_humidity.write_value(float(humidity))
+            else:
+                print('Failed to get DHT11 Reading, trying again in ', DHT_READ_TIMEOUT, 'seconds')
+
+            await asyncio.sleep(DHT_READ_TIMEOUT)
 
 if __name__ == '__main__':
     asyncio.run(main())
