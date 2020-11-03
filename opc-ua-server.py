@@ -35,11 +35,12 @@ async def main():
             humidity, temperature = Adafruit_DHT.read_retry(Adafruit_DHT.DHT11, DHT_DATA_PIN)
 
             if humidity is not None and temperature is not None:
-                print('Temp={0:0.1f}*C Humidity={1:0.1f}%'.format(temperature, humidity))
+                print('temperature: {0:0.1f}*C'.format(temperature))
+                print('humidity: {0:0.1f}%'.format(humidity))
                 await var_temperature.write_value(float(temperature))
                 await var_humidity.write_value(float(humidity))
             else:
-                print('Failed to get DHT11 Reading, trying again in ', DHT_READ_TIMEOUT, 'seconds')
+                print('Failed to get DHT11 reading, trying again in ', DHT_READ_TIMEOUT, 'seconds')
 
             await asyncio.sleep(DHT_READ_TIMEOUT)
 
