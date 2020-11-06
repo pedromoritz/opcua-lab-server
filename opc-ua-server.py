@@ -6,7 +6,7 @@ import asyncio
 from asyncua import ua, Server
 from asyncua.common.methods import uamethod
 
-DHT_DATA_PIN = 25
+DHT_DATA_PIN = 14
 DHT_READ_TIMEOUT = 2
 
 logging.basicConfig(level=logging.INFO)
