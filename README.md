@@ -1,9 +1,13 @@
-OPC UA Lab
+OPC UA Lab Server
 =====================
 
 #### Install
 
+prerequisites: python 3
+
     $ git clone https://github.com/pedromoritz/opcua-lab-server.git
+    $ cd opcua-lab-server
+    $ pip install -f requirements.txt
 
 #### Run
 
